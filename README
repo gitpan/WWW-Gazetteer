@@ -3,69 +3,66 @@ NAME
 
 SYNOPSYS
       use WWW::Gazetteer;
-      my $g = WWW::Gazetteer->new();
-      my $london = $g->fetch("London", "United Kingdom");
+      my $g = WWW::Gazetteer->new('calle');
+      my @londons = $g->find(UK => 'London');
+      my $london = $londons[0];
       print $london->{longitude}, ", ", $london->{latitude}, "\n";
-      my $nice = $g->fetch("Nice", "France");
-      my @bactons = $g->fetch("Bacton", "United Kingdom");
-      # note: more than one Bacton in the UK!
 
 DESCRIPTION
     A gazetteer is a geographical dictionary (as at the back of an atlas).
-    The `WWW::Gazetteer' module uses the information at
-    http://www.calle.com/world/ to return geographical location (longitude,
-    latitude) for towns and cities in countries in the world.
+    The "WWW::Gazetteer" module is a generic interface to the
+    "WWW::Gazetteer::*" modules which can return geographical location
+    (longitude, latitude, elevation) for towns and cities in countries in
+    the world.
 
-    Once you have imported the module and created a gazetteer object,
-    calling fetch($town, $country) will return a list of hashrefs with
-    longitude and latitude information.
+    This is a factory module which dispatches to one of the many
+    "WWW::Gazetteer::*" modules. This provides a simple interface and lets
+    the subclasses actually provide an interface to the online gazetteers.
+    You may think of this as the DBI and the subclasses as the DBDs.
 
-      my $london = $g->fetch("London", "United Kingdom");
+    Valid subclasses as of this release are: "WWW::Gazetteer::Calle". To
+    create a gazetteer object, pass the name of the subclass as the first
+    argument to new:
+
+      my $g = WWW::Gazetteer->new('calle');
+
+    Calling find($country => $town) will return a list of hashrefs with the
+    country, town, longitude, and latitude information. Additional
+    information such as elevation may also be available. You should check
+    the documentation of your subclass for the particular features that it
+    supports.
+
+      my @londons = $g->find(UK => 'London');
+      my $london = $londons[0];
       print $london->{longitude}, ", ", $london->{latitude}, "\n";
       # prints -0.1167, 51.5000
 
-    Note that there may be more than one town or city with that name in the
-    country. In that case, you will get a list of hashrefs for each
-    town/city.
+METHODS
+  new()
 
-    The following countries are valid: Afghanistan, Albania, Algeria,
-    Andorra, Angola, Anguilla, Antigua and Barbuda, Argentina, Armenia,
-    Ashmore and Cartier Islands, Australia, Austria, Azerbaijan, Bahamas,
-    The, Bahrain, Bangladesh, Barbados, Belarus, Belgium, Belize, Benin,
-    Bhutan, Bolivia, Bosnia and Herzegovina, Botswana, Bouvet Island,
-    Brazil, British Indian Ocean Territory, British Virgin Islands, Brunei,
-    Bulgaria, Burkina Faso, Burma, Burundi, Cambodia, Cameroon, Canada, Cape
-    Verde, Cayman Islands, Central African Republic, Chad, Chile, China,
-    Clipperton Island, Cocos (Keeling) Islands, Colombia, Congo, Cook
-    Islands, Coral Sea Islands, Costa Rica, Croatia, Cuba, Cyprus, Czech
-    Republic, Côte d'Ivoire, Denmark, Djibouti, Dominica, Dominican
-    Republic, Ecuador, Egypt, El Salvador, Equatorial Guinea, Eritrea,
-    Estonia, Ethiopia, Europa Island, Falkland Islands (Islas Malvinas),
-    Fiji, Finland, France, Gabon, Gambia, The, Georgia, Republic of,
-    Germany, Ghana, Gibraltar, Glorioso Islands, Greece, Grenada, Guatemala,
-    Guernsey, Guinea, Guinea-Bissau, Guyana, Haiti, Heard Island and
-    McDonald Islands, Honduras, Hong Kong, Hungary, Iceland, India,
-    Indonesia, Iran, Iraq, Ireland, Isle of Man, Israel, Italy, Jamaica,
-    Japan, Jersey, Jordan, Juan de Nova Island, Kazakhstan, Kenya, Kiribati,
-    Kuwait, Kyrgyzstan, Laos, Latvia, Lebanon, Lesotho, Liberia, Libya,
-    Liechtenstein, Lithuania, Luxembourg, Macau, Macedonia, The Former
-    Yugoslav Republic of, Madagascar, Malawi, Malaysia, Maldives, Mali,
-    Malta, Marshall Islands, Mauritania, Mauritius, Mayotte, Mexico,
-    Moldova, Monaco, Mongolia, Montenegro, Montserrat, Morocco, Mozambique,
-    Namibia, Naoero, Nepal, Netherlands, New Zealand, Nicaragua, Niger,
-    Nigeria, Niue, Norfolk Island, North Korea, Norway, Oman, Pakistan,
-    Panama, Papua New Guinea, Paraguay, Peru, Philippines, Pitcairn Islands,
-    Poland, Portugal, Qatar, Romania, Russia, Rwanda, Saint Kitts and Nevis,
-    Saint Lucia, Saint Vincent and the Grenadines, Samoa, San Marino, Sao
-    Tome and Principe, Saudi Arabia, Senegal, Serbia, Seychelles, Sierra
-    Leone, Singapore, Slovakia, Slovenia, Solomon Islands, Somalia, South
-    Africa, South Georgia and the South Sandwich Islands, South Korea,
-    Spain, Sri Lanka, Sudan, Suriname, Swaziland, Sweden, Switzerland,
-    Syria, Taiwan, Tajikistan, Tanzania, Thailand, Togo, Tokelau, Tonga,
-    Trinidad and Tobago, Tristan da Cunha, Tromelin Island, Tunisia, Turkey,
-    Turkmenistan, Turks and Caicos Islands, Tuvalu, Uganda, Ukraine, United
-    Arab Emirates, United Kingdom, Uruguay, Uzbekistan, Vanuatu, Vatican
-    City, Venezuela, Vietnam, Western Sahara, Yemen, Zambia, Zimbabwe.
+    This returns a new WWW::Gazetteer::* object. It has one argument, the
+    name of the subclass (and optionally configuration for the subclass):
+
+      use WWW::Gazetteer;
+      my $g = WWW::Gazetteer->new('calle');
+
+  find()
+
+    The find method looks up geographical information and returns it to you.
+    It takes in a country and a city, with the recommended syntax being ISO
+    3166 code and city name.
+
+    Note that there may be more than one town or city with that name in the
+    country. You will get a list of hashrefs for each town/city.
+
+      my @londons = $g->find("UK" => "London");
+
+    Check the documentation of your subclass for which countries, which
+    syntax it supports, and what information it returns.
+
+SEE ALSO
+    the WWW::Gazetteer::Calle manpage, the WWW::Gazetteer::HeavensAbove
+    manpage.
 
 COPYRIGHT
     Copyright (C) 2002, Leon Brocard
@@ -74,6 +71,5 @@ COPYRIGHT
     the same terms as Perl itself.
 
 AUTHOR
-    Leon Brocard, acme@astray.com. Based upon ideas and code by Nathan
-    Bailey.
+    Leon Brocard, acme@astray.com. Thanks to Philippe 'BooK' Bruhat.
 
