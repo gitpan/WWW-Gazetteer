@@ -5,7 +5,7 @@ use HTTP::Cookies;
 use LWP::UserAgent;
 
 use vars qw($VERSION);
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 my $countries = {
           'Tuvalu' => 'tuvalu',
@@ -275,7 +275,7 @@ sub fetch {
     my($lat, $long) = ($1, $2);
     push @cities, { latitude => $lat, longitude => $long };
    }
-  return @cities;
+   return wantarray ? @cities : $cities[0];
 }
 
 __END__
