@@ -4,10 +4,12 @@ use Class::Factory;
 
 use vars qw($VERSION @ISA);
 @ISA = qw(Class::Factory);
-$VERSION = '0.20';
+$VERSION = '0.21';
 
 __PACKAGE__->register_factory_type(calle => 'WWW::Gazetteer::Calle');
 __PACKAGE__->register_factory_type(Calle => 'WWW::Gazetteer::Calle');
+__PACKAGE__->register_factory_type(HeavensAbove => 'WWW::Gazetteer::HeavensAbove');
+__PACKAGE__->register_factory_type(heavensabove => 'WWW::Gazetteer::HeavensAbove');
 
 sub new {
   my ($pkg, $type, @params) = @_;
@@ -27,7 +29,7 @@ WWW::Gazetteer - Find location of world towns and cities
 
   use WWW::Gazetteer;
   my $g = WWW::Gazetteer->new('calle');
-  my @londons = $g->find(UK => 'London');
+  my @londons = $g->find('London', 'UK');
   my $london = $londons[0];
   print $london->{longitude}, ", ", $london->{latitude}, "\n";
 
@@ -45,19 +47,20 @@ lets the subclasses actually provide the communication to the online
 gazetteers. You may think of this as the DBI and the subclasses as the
 DBDs.
 
-Valid subclasses as of this release are: C<WWW::Gazetteer::Calle>. To
-create a gazetteer object, pass the name of the subclass as the first
-argument to new:
+Valid subclasses as of this release are: C<WWW::Gazetteer::Calle> and
+C<WWW::Gazetteer::HeavensAbove>. To create a gazetteer object, pass
+the name of the subclass as the first argument to new:
 
   my $g = WWW::Gazetteer->new('calle');
+  my $g2 = WWW::Gazetteer->new('heavensabove');
 
-Calling find($country => $town) will return a list of hashrefs with
+Calling find($town, $country) will return a list of hashrefs with
 the country, town, longitude, and latitude information. Additional
 information such as elevation may also be available. You should check
 the documentation of your subclass for the particular features that it
 supports.
 
-  my @londons = $g->find(UK => 'London');
+  my @londons = $g->find('London', 'UK');
   my $london = $londons[0];
   print $london->{longitude}, ", ", $london->{latitude}, "\n";
   # prints -0.1167, 51.5000
@@ -75,13 +78,13 @@ name of the subclass (and optionally configuration for the subclass):
 =head2 find()
 
 The find method looks up geographical information and returns it to
-you. It takes in a country and a city, with the recommended syntax
-being ISO 3166 code and city name.
+you. It takes in a city and a country, with the recommended syntax
+being te city name and ISO 3166 country code.
 
 Note that there may be more than one town or city with that name in
 the country. You will get a list of hashrefs for each town/city.
 
-  my @londons = $g->find("UK" => "London");
+  my @londons = $g->find("London", "UK");
 
 Check the documentation of your subclass for which countries, which
 syntax it supports, and what information it returns.
