@@ -4,10 +4,12 @@ use Class::Factory;
 
 use vars qw($VERSION @ISA);
 @ISA = qw(Class::Factory);
-$VERSION = '0.21';
+$VERSION = '0.22';
 
 __PACKAGE__->register_factory_type(calle => 'WWW::Gazetteer::Calle');
 __PACKAGE__->register_factory_type(Calle => 'WWW::Gazetteer::Calle');
+__PACKAGE__->register_factory_type(getty => 'WWW::Gazetteer::Getty');
+__PACKAGE__->register_factory_type(Getty => 'WWW::Gazetteer::Getty');
 __PACKAGE__->register_factory_type(HeavensAbove => 'WWW::Gazetteer::HeavensAbove');
 __PACKAGE__->register_factory_type(heavensabove => 'WWW::Gazetteer::HeavensAbove');
 
@@ -47,11 +49,13 @@ lets the subclasses actually provide the communication to the online
 gazetteers. You may think of this as the DBI and the subclasses as the
 DBDs.
 
-Valid subclasses as of this release are: C<WWW::Gazetteer::Calle> and
-C<WWW::Gazetteer::HeavensAbove>. To create a gazetteer object, pass
-the name of the subclass as the first argument to new:
+Valid subclasses as of this release are: C<WWW::Gazetteer::Calle>,
+C<WWW::Gazetteer::Getty> and C<WWW::Gazetteer::HeavensAbove>. To
+create a gazetteer object, pass the name of the subclass as the first
+argument to new:
 
   my $g = WWW::Gazetteer->new('calle');
+  my $g = WWW::Gazetteer->new('getty');
   my $g2 = WWW::Gazetteer->new('heavensabove');
 
 Calling find($town, $country) will return a list of hashrefs with
@@ -91,7 +95,8 @@ syntax it supports, and what information it returns.
 
 =head1 SEE ALSO
 
-L<WWW::Gazetteer::Calle>, L<WWW::Gazetteer::HeavensAbove>.
+L<WWW::Gazetteer::Calle>, L<WWW::Gazetteer::Getty>,
+L<WWW::Gazetteer::HeavensAbove>.
 
 =head1 COPYRIGHT
 

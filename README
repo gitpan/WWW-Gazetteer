@@ -10,22 +10,24 @@ SYNOPSYS
 
 DESCRIPTION
     A gazetteer is a geographical dictionary (as at the back of an atlas).
-    The `WWW::Gazetteer' module is a generic interface to the
-    `WWW::Gazetteer::*' modules which can return geographical location
+    The "WWW::Gazetteer" module is a generic interface to the
+    "WWW::Gazetteer::*" modules which can return geographical location
     (longitude, latitude, elevation) for towns and cities in countries in
     the world.
 
     This is a factory module which dispatches to one of the many
-    `WWW::Gazetteer::*' modules. This provides a simple interface and lets
+    "WWW::Gazetteer::*" modules. This provides a simple interface and lets
     the subclasses actually provide the communication to the online
     gazetteers. You may think of this as the DBI and the subclasses as the
     DBDs.
 
-    Valid subclasses as of this release are: `WWW::Gazetteer::Calle' and
-    `WWW::Gazetteer::HeavensAbove'. To create a gazetteer object, pass the
-    name of the subclass as the first argument to new:
+    Valid subclasses as of this release are: "WWW::Gazetteer::Calle",
+    "WWW::Gazetteer::Getty" and "WWW::Gazetteer::HeavensAbove". To create a
+    gazetteer object, pass the name of the subclass as the first argument to
+    new:
 
       my $g = WWW::Gazetteer->new('calle');
+      my $g = WWW::Gazetteer->new('getty');
       my $g2 = WWW::Gazetteer->new('heavensabove');
 
     Calling find($town, $country) will return a list of hashrefs with the
@@ -41,7 +43,6 @@ DESCRIPTION
 
 METHODS
   new()
-
     This returns a new WWW::Gazetteer::* object. It has one argument, the
     name of the subclass (and optionally configuration for the subclass):
 
@@ -49,7 +50,6 @@ METHODS
       my $g = WWW::Gazetteer->new('calle');
 
   find()
-
     The find method looks up geographical information and returns it to you.
     It takes in a city and a country, with the recommended syntax being te
     city name and ISO 3166 country code.
@@ -63,8 +63,8 @@ METHODS
     syntax it supports, and what information it returns.
 
 SEE ALSO
-    the WWW::Gazetteer::Calle manpage, the WWW::Gazetteer::HeavensAbove
-    manpage.
+    WWW::Gazetteer::Calle, WWW::Gazetteer::Getty,
+    WWW::Gazetteer::HeavensAbove.
 
 COPYRIGHT
     Copyright (C) 2002, Leon Brocard

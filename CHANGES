@@ -1,5 +1,8 @@
 Revision history for Perl module WWW::Gazetteer: 
 
+0.22 Fri Oct 25 17:21:18 BST 2002
+	- document support for WWW::Gazetteer::Getty
+
 0.21 Wed Oct 23 09:47:11 BST 2002
 	- now document support for WWW::Gazetteer::HeavensAbove
 
