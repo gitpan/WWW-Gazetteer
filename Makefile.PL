@@ -5,8 +5,9 @@ WriteMakefile(
   NAME	 => "WWW::Gazetteer",
   VERSION_FROM => 'Gazetteer.pm',
   PREREQ_PM    =>  {
-   'Class::Factory' => 0.01,
-   'Test::Simple' => 0.01,
+   'Module::Pluggable' => 0.01,
+   'Test::More' => 0.01,
+   'Test::Exception' => 0.01,
   },
   AUTHOR       => 'Leon Brocard <acme@astray.com>',
 );

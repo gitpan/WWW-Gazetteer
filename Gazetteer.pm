@@ -1,21 +1,24 @@
 package WWW::Gazetteer;
 use strict;
-use Class::Factory;
+use Module::Pluggable search_path => ['WWW::Gazetteer'], require => 1;
 
 use vars qw($VERSION @ISA);
-@ISA = qw(Class::Factory);
-$VERSION = '0.22';
-
-__PACKAGE__->register_factory_type(calle => 'WWW::Gazetteer::Calle');
-__PACKAGE__->register_factory_type(Calle => 'WWW::Gazetteer::Calle');
-__PACKAGE__->register_factory_type(getty => 'WWW::Gazetteer::Getty');
-__PACKAGE__->register_factory_type(Getty => 'WWW::Gazetteer::Getty');
-__PACKAGE__->register_factory_type(HeavensAbove => 'WWW::Gazetteer::HeavensAbove');
-__PACKAGE__->register_factory_type(heavensabove => 'WWW::Gazetteer::HeavensAbove');
+$VERSION = '0.23';
 
 sub new {
-  my ($pkg, $type, @params) = @_;
-  my $class = $pkg->get_factory_class($type);
+  my ($package, $type, @params) = @_;
+
+  my $self = bless {}, $package;
+
+  my $class;
+  foreach my $plugin ($self->plugins) {
+    if ($plugin =~ /$type/i) {
+      $class = $plugin;
+      last;
+    }
+  }
+
+  die "No WWW::Gazetteer plugin for $type found" unless $class;
   return $class->new(@params);
 }
 
@@ -30,7 +33,7 @@ WWW::Gazetteer - Find location of world towns and cities
 =head1 SYNOPSYS
 
   use WWW::Gazetteer;
-  my $g = WWW::Gazetteer->new('calle');
+  my $g = WWW::Gazetteer->new('FallingRain');
   my @londons = $g->find('London', 'UK');
   my $london = $londons[0];
   print $london->{longitude}, ", ", $london->{latitude}, "\n";
@@ -49,14 +52,14 @@ lets the subclasses actually provide the communication to the online
 gazetteers. You may think of this as the DBI and the subclasses as the
 DBDs.
 
-Valid subclasses as of this release are: C<WWW::Gazetteer::Calle>,
+Valid subclasses as of this release are: C<WWW::Gazetteer::FallingRain>,
 C<WWW::Gazetteer::Getty> and C<WWW::Gazetteer::HeavensAbove>. To
 create a gazetteer object, pass the name of the subclass as the first
 argument to new:
 
-  my $g = WWW::Gazetteer->new('calle');
-  my $g = WWW::Gazetteer->new('getty');
-  my $g2 = WWW::Gazetteer->new('heavensabove');
+  my $g  = WWW::Gazetteer->new('FallingRain');
+  my $g2 = WWW::Gazetteer->new('Getty');
+  my $g3 = WWW::Gazetteer->new('HeavensAbove');
 
 Calling find($town, $country) will return a list of hashrefs with
 the country, town, longitude, and latitude information. Additional
@@ -77,7 +80,7 @@ This returns a new WWW::Gazetteer::* object. It has one argument, the
 name of the subclass (and optionally configuration for the subclass):
 
   use WWW::Gazetteer;
-  my $g = WWW::Gazetteer->new('calle');
+  my $g = WWW::Gazetteer->new('FallingRain');
 
 =head2 find()
 
@@ -95,12 +98,12 @@ syntax it supports, and what information it returns.
 
 =head1 SEE ALSO
 
-L<WWW::Gazetteer::Calle>, L<WWW::Gazetteer::Getty>,
+L<WWW::Gazetteer::FallingRain>, L<WWW::Gazetteer::Getty>,
 L<WWW::Gazetteer::HeavensAbove>.
 
 =head1 COPYRIGHT
 
-Copyright (C) 2002, Leon Brocard
+Copyright (C) 2002-5, Leon Brocard
 
 This module is free software; you can redistribute it or modify it
 under the same terms as Perl itself.

@@ -3,7 +3,7 @@ NAME
 
 SYNOPSYS
       use WWW::Gazetteer;
-      my $g = WWW::Gazetteer->new('calle');
+      my $g = WWW::Gazetteer->new('FallingRain');
       my @londons = $g->find('London', 'UK');
       my $london = $londons[0];
       print $london->{longitude}, ", ", $london->{latitude}, "\n";
@@ -21,14 +21,14 @@ DESCRIPTION
     gazetteers. You may think of this as the DBI and the subclasses as the
     DBDs.
 
-    Valid subclasses as of this release are: "WWW::Gazetteer::Calle",
+    Valid subclasses as of this release are: "WWW::Gazetteer::FallingRain",
     "WWW::Gazetteer::Getty" and "WWW::Gazetteer::HeavensAbove". To create a
     gazetteer object, pass the name of the subclass as the first argument to
     new:
 
-      my $g = WWW::Gazetteer->new('calle');
-      my $g = WWW::Gazetteer->new('getty');
-      my $g2 = WWW::Gazetteer->new('heavensabove');
+      my $g  = WWW::Gazetteer->new('FallingRain');
+      my $g2 = WWW::Gazetteer->new('Getty');
+      my $g3 = WWW::Gazetteer->new('HeavensAbove');
 
     Calling find($town, $country) will return a list of hashrefs with the
     country, town, longitude, and latitude information. Additional
@@ -47,7 +47,7 @@ METHODS
     name of the subclass (and optionally configuration for the subclass):
 
       use WWW::Gazetteer;
-      my $g = WWW::Gazetteer->new('calle');
+      my $g = WWW::Gazetteer->new('FallingRain');
 
   find()
     The find method looks up geographical information and returns it to you.
@@ -63,11 +63,11 @@ METHODS
     syntax it supports, and what information it returns.
 
 SEE ALSO
-    WWW::Gazetteer::Calle, WWW::Gazetteer::Getty,
+    WWW::Gazetteer::FallingRain, WWW::Gazetteer::Getty,
     WWW::Gazetteer::HeavensAbove.
 
 COPYRIGHT
-    Copyright (C) 2002, Leon Brocard
+    Copyright (C) 2002-5, Leon Brocard
 
     This module is free software; you can redistribute it or modify it under
     the same terms as Perl itself.
