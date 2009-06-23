@@ -1,25 +1,26 @@
 package WWW::Gazetteer;
 use strict;
+use warnings;
 use Module::Pluggable search_path => ['WWW::Gazetteer'], require => 1;
 
 use vars qw($VERSION @ISA);
-$VERSION = '0.23';
+$VERSION = '0.24';
 
 sub new {
-  my ($package, $type, @params) = @_;
+    my ( $package, $type, @params ) = @_;
 
-  my $self = bless {}, $package;
+    my $self = bless {}, $package;
 
-  my $class;
-  foreach my $plugin ($self->plugins) {
-    if ($plugin =~ /$type/i) {
-      $class = $plugin;
-      last;
+    my $class;
+    foreach my $plugin ( $self->plugins ) {
+        if ( $plugin =~ /$type/i ) {
+            $class = $plugin;
+            last;
+        }
     }
-  }
 
-  die "No WWW::Gazetteer plugin for $type found" unless $class;
-  return $class->new(@params);
+    die "No WWW::Gazetteer plugin for $type found" unless $class;
+    return $class->new(@params);
 }
 
 1;
@@ -103,10 +104,15 @@ L<WWW::Gazetteer::HeavensAbove>.
 
 =head1 COPYRIGHT
 
-Copyright (C) 2002-5, Leon Brocard
+Copyright (C) 2002-9, Leon Brocard
 
 This module is free software; you can redistribute it or modify it
 under the same terms as Perl itself.
+
+=head1 LICENSE
+
+This module is free software; you can redistribute it or
+modify it under the same terms as Perl itself.
 
 =head1 AUTHOR
 
